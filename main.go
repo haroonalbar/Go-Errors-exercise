@@ -2,29 +2,23 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
-type ErrNegativeSqrt struct {
-	when time.Time
-	what string
-}
+type ErrNegativeSqrt float64
 
-func (err ErrNegativeSqrt) Error() string {
-	return fmt.Sprintf("Error: %v at %v", err.what, err.when)
+func (neg ErrNegativeSqrt) Error() string {
+	return fmt.Sprintf("Error: %v is not compatible", float64(neg))
 }
 
 func Sqrt(x float64) (float64, error) {
 	if x >= 0 {
-
 		val := 1.0
 		for i := 0; i < 10; i++ {
 			val = val - ((val*val - x) / (2 * val))
 		}
 		return val, nil
 	} else {
-		return 0, ErrNegativeSqrt{when: time.Now(),
-			what: "Not gonna work"}
+		return 0, ErrNegativeSqrt(x)
 	}
 }
 
