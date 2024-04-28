@@ -1,9 +1,18 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"time"
 )
+
+type ErrNegativeSqrt struct {
+	when time.Time
+	what string
+}
+
+func (err ErrNegativeSqrt) Error() string {
+	return fmt.Sprintf("Error: %v at %v", err.what, err.when)
+}
 
 func Sqrt(x float64) (float64, error) {
 	if x >= 0 {
@@ -14,7 +23,8 @@ func Sqrt(x float64) (float64, error) {
 		}
 		return val, nil
 	} else {
-		return 0, errors.New("Bro will not go")
+		return 0, ErrNegativeSqrt{when: time.Now(),
+			what: "Not gonna work"}
 	}
 }
 
